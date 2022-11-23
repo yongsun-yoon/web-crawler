@@ -49,7 +49,10 @@ def main(cfg: DictConfig):
 
     while True:
         msg = sqs_client.receive_message(QueueUrl=queue_url)
-        body = json.loads(msg['Messages'][0]['Body'])
+        msg = msg.get('Messages')
+        if msg is None: continue
+
+        body = json.loads(msg[0]['Body'])
         url = body['url']
 
         if url in seen: continue
