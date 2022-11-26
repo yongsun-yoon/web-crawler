@@ -1,3 +1,4 @@
+import os
 import hydra
 import boto3
 import hydra
@@ -18,7 +19,9 @@ def main(cfg: DictConfig):
         for content in page['Contents']:
             try:
                 key = content['Key']
-                s3_client.download_file(cfg.name, key, f'{cfg.datadir}/{key}')
+                fpath = f'{cfg.datadir}/{key}'
+                if not os.path.exists(fpath):
+                    s3_client.download_file(cfg.name, key, fpath)
                 cnt += 1
             
             except:
