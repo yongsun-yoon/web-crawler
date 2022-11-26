@@ -1,10 +1,6 @@
-import os
-import json
 import hydra
 import boto3
 import hydra
-from tqdm.auto import tqdm
-from urllib.parse import unquote
 from omegaconf import OmegaConf, DictConfig
 
 
@@ -19,9 +15,17 @@ def main(cfg: DictConfig):
 
     cnt = 0
     for page in response_iterator:
-        cnt += len(page['Contents'])
-        
-    print(f'Number of htmls: {cnt}')
+        for content in page['Contents']:
+            try:
+                key = content['Key']
+                s3_client.download_file(cfg.name, key, f'{cfg.datadir}/{key}')
+                cnt += 1
+            
+            except:
+                pass
+            
+            if cnt % 1000 == 0:
+                print(f'download htmls: {cnt}')
 
 
 if __name__ == '__main__':

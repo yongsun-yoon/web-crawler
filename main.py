@@ -32,8 +32,8 @@ def step(url, lambda_client, queue_url):
 def main(cfg: DictConfig):
     print(OmegaConf.to_yaml(cfg))
 
-    lambda_client = boto3.client('lambda', region_name=cfg.aws_region)
-    sqs_client = boto3.client('sqs', region_name=cfg.aws_region)
+    lambda_client = boto3.client('lambda')
+    sqs_client = boto3.client('sqs')
     queue_url = sqs_client.get_queue_url(QueueName=cfg.name)['QueueUrl']
 
     seen = open('seen.txt', 'r').read()

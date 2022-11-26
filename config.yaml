@@ -1,6 +1,5 @@
 name: korean-htmls
 datadir: /mnt/ko-html
-aws_region: ap-northeast-2
 
 seed_urls:
 - https://www.naver.com
